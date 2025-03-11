@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Generate QR Code for Digital Restaurant Menu</title>
+    <title>QR Code Result</title>
 
     <!-- Bootstrap CSS CDN -->
     <link
@@ -13,24 +13,35 @@
     />
 
     <style>
+      /* Full background image */
       body {
-        background: url("{% static 'images/hehhe.jpeg' %}") no-repeat center
+        background: url("{% static 'images/jeevvv.jpg' %}") no-repeat center
           center/cover;
         min-height: 100vh;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         text-align: center;
         color: #fff;
       }
+      /* Responsive Container for QR result */
       .container {
         max-width: 600px;
-        background: rgba(0, 0, 0, 0.7);
+        background: rgba(0, 0, 0, 0.6);
         padding: 30px;
-        border-radius: 12px;
+        border-radius: 10px;
         box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.3);
       }
-      .btn-primary {
+      /* QR Code Preview Box */
+      .qr-code {
+        margin-top: 20px;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 10px;
+      }
+      /* Download Button Styling */
+      .btn-download {
         background-color: #ff5733;
         border-color: #ff5733;
         padding: 12px 30px;
@@ -39,47 +50,37 @@
         text-transform: uppercase;
         border-radius: 8px;
         transition: all 0.3s ease-in-out;
+        color: #fff;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 20px;
       }
-      .btn-primary:hover {
+      .btn-download:hover {
         background-color: #e04d2c;
         border-color: #e04d2c;
         transform: scale(1.05);
       }
-      .qr-code {
-        margin-top: 20px;
-        padding: 15px;
-        background: rgba(255, 255, 255, 0.8);
-        border-radius: 10px;
-      }
     </style>
   </head>
   <body>
-    <!-- QR Code Form Container -->
+    <!-- QR Code Result Container -->
     <div class="container">
-      <h2 class="mb-4">Create Your Restaurant QR Code</h2>
-      <form action="{% url 'generate_qr_code' %}" method="POST">
-        {% csrf_token %}
-        <div class="mb-3 text-start">
-          <label class="form-label">Restaurant Name</label>
-          {{ form.restaurant_name }}
-        </div>
-        <div class="mb-3 text-start">
-          <label class="form-label">Menu URL</label>
-          {{ form.url }}
-        </div>
-        <button type="submit" class="btn btn-primary w-100">
-          Generate QR Code
-        </button>
-      </form>
+      <h2>Your Generated QR Code</h2>
+      <p>Restaurant Name: {{ res_name }}</p>
       {% if qr_code_url %}
       <div class="qr-code mt-4">
-        <h5>Your QR Code:</h5>
         <img
           src="{{ qr_code_url }}"
           alt="Generated QR Code"
           class="img-fluid"
         />
       </div>
+      <!-- Download Button -->
+      <a href="{{ qr_code_url }}" download class="btn-download mt-4"
+        >Download QR Code</a
+      >
+      {% else %}
+      <p>No QR Code available.</p>
       {% endif %}
     </div>
   </body>
